@@ -23,11 +23,11 @@ int main ( int argc, char* argv[]){
 
 uint8_t recursive_clz(uint32_t x, uint32_t shifter)
 {
-    /* if x's lowest bit == 0, return 0*/
+    /* if x's lowest bit == 0, return 1*/
     if(shifter == 0) return ((x+1) & 1) ;
     uint16_t upper = (x >> shifter);
     uint16_t lower = x & (0xFFFFFFFF >> shifter);
-    return upper>0 ? recursive_clz(upper , shifter >>1) : shifter + recursive_clz(lower, shifter>>1);
+    return upper ? recursive_clz(upper , shifter >>1) : shifter + recursive_clz(lower, shifter>>1);
 }
 
 
