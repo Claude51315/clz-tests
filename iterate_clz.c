@@ -9,7 +9,7 @@ int main ( int argc, char* argv[]){
     
     struct timespec start = {0,0};
     struct timespec end = {0,0};
-    uint32_t upper_bound = UINT16_MAX << 5;
+    uint32_t upper_bound = UINT16_MAX;
    
     clock_gettime(CLOCK_ID, &start);
     for(uint32_t i = 0; i < upper_bound; i++)
@@ -17,7 +17,7 @@ int main ( int argc, char* argv[]){
         iterate_clz(i);
     }
     clock_gettime(CLOCK_ID, &end);
-    printf("iterate duration: %lf\n", (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC);  
+    printf("iterate,%lf\n", (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC);  
     
     return 0;
 }
