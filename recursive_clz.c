@@ -18,7 +18,7 @@ int main ( int argc, char* argv[])
     }
     clock_gettime(CLOCK_ID, &end);
     p = fopen("origin_data.txt","a");
-    fprintf(p,"recusive %lf\n", (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC);
+    fprintf(p,"recursive %lf\n", (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC);
     fclose(p);
     return 0;
 }
