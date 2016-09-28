@@ -13,6 +13,7 @@
 #define clz(x) clz2(x, 16)
 #endif
 static double diff_in_second(struct timespec start, struct timespec end);
+static double diff_in_nano_second(struct timespec start, struct timespec end);
 int main ( int argc, char* argv[])
 {
     FILE *p;
@@ -20,23 +21,30 @@ int main ( int argc, char* argv[])
     struct timespec start = {0,0};
     struct timespec end = {0,0};
     uint32_t upper_bound = UINT16_MAX;
-    clock_gettime(CLOCK_ID, &start);
+    //clock_gettime(CLOCK_ID, &start);
     for(uint32_t i = 0; i < upper_bound; i++) {
+        clock_gettime(CLOCK_ID, &start);
         clz(i);
-    }
-    clock_gettime(CLOCK_ID, &end);
+        clock_gettime(CLOCK_ID, &end);
 #ifdef binary
-    p = fopen("binary.txt","a");
+        p = fopen("binary.txt","a");
 #elif iterate
-    p = fopen("iterate.txt", "a");
+        p = fopen("iterate.txt", "a");
 #else
-    p = fopen("recursive.txt", "a");
+        p = fopen("recursive.txt", "a");
 #endif
-    fprintf(p,"%lf\n", diff_in_second(start, end));
-    fclose(p);
+        fprintf(p,"%lf\n", diff_in_nano_second(start, end));
+        fclose(p);
+
+    }
+    //clock_gettime(CLOCK_ID, &end);
     return 0;
 }
 static double diff_in_second(struct timespec start, struct timespec end)
 {
     return (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC;
+}
+static double diff_in_nano_second(struct timespec start, struct timespec end)
+{
+    return (double)(end.tv_nsec - start.tv_nsec);
 }
