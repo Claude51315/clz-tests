@@ -1,28 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdint.h>
-#include<time.h>
-uint8_t binary_search_clz(uint32_t x);
-#define CLOCK_ID CLOCK_MONOTONIC_RAW
-#define ONE_SEC 1000000000.0
-int main ( int argc, char* argv[])
-{
-
-    struct timespec start = {0,0};
-    struct timespec end = {0,0};
-    uint32_t upper_bound = UINT16_MAX;
-    FILE *p;
-    clock_gettime(CLOCK_ID, &start);
-    for(uint32_t i = 0; i < upper_bound; i++) {
-        binary_search_clz(i);
-    }
-    clock_gettime(CLOCK_ID, &end);
-    p = fopen("origin_data.txt", "a");
-    fprintf(p, "binary %lf\n", (double) (end.tv_sec - start.tv_sec)+(end.tv_nsec - start.tv_nsec)/ONE_SEC);
-    fclose(p);
-    return 0;
-}
-uint8_t binary_search_clz(uint32_t x)
+#include "clz.h"
+uint8_t clz(uint32_t x)
 {
     if(x == 0 ) return 32;
     int n = 0;
