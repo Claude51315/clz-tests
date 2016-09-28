@@ -30,6 +30,8 @@ int main ( int argc, char* argv[])
         p = fopen("binary.txt","a");
 #elif iterate
         p = fopen("iterate.txt", "a");
+#elif byte_shift
+        p = fopen("byteshift.txt", "a");
 #else
         p = fopen("recursive.txt", "a");
 #endif

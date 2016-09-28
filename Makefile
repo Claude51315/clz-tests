@@ -4,9 +4,10 @@ COMMON= main.c clz.h
 REPEAT=20
 
 
-EXECUTABLES= binary_search_clz \
-			 recursive_clz \
-			 iterate_clz 
+EXECUTABLES=binary_search_clz \
+			recursive_clz \
+			iterate_clz \
+			byte_shift_clz
 all: astyle plot
 exec: ${EXECUTABLES}
 
@@ -18,13 +19,15 @@ recursive_clz: ${COMMON} recursive_clz.c
 	${CC} ${CFLAG} -Drecursive main.c $@.c -o $@
 iterate_clz: ${COMMON} iterate_clz.c
 	${CC} ${CFLAG} -Diterate main.c  $@.c -o $@
-
+byte_shift_clz: ${COMMON} byte_shift_clz.c
+	${CC} ${CFLAG} -Dbyteshift main.c  $@.c -o $@
 clean:
 	-rm -f ${EXECUTABLES} calculate gmon.out *.txt plot.png
 bench: ${EXECUTABLES}
 	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
 	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
 	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
+	perf stat --repeat ${REPEAT} -e cycles ./byte_shift
 output.txt: bench calculate.c
 	${CC} calculate.c -o calculate
 	./calculate ${REPEAT}
