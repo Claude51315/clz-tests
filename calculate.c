@@ -22,7 +22,8 @@ void calculate(char filename[])
     double tmp = 0;
     data = fopen(filename, "r");
     if(data == NULL) {
-        printf("%s\n", filename);
+        printf("%s open fail!\n", filename);
+        return ;
     }
     while(!feof(data)) {
         fscanf(data, "%lf", &tmp);
