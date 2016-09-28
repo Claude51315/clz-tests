@@ -1,27 +1,27 @@
 CC=gcc
 CFLAG=-O0 -Wall -pg -g
+COMMON= main.c clz.h
 REPEAT=20
 
 
 EXECUTABLES= binary_search_clz \
 			 recursive_clz \
-			 iterate_clz \
-			 calculate
+			 iterate_clz 
 all: astyle plot
+exec: ${EXECUTABLES}
+
 .phony: clean bench astyle
 
-binary_search_clz: binary_search_clz.c 
-	${CC} ${CFLAG} binary_search_clz.c -o binary_search_clz
-recursive_clz: recursive_clz.c
-	${CC} ${CFLAG} recursive_clz.c -o recursive_clz
-iterate_clz: iterate_clz.c
-	${CC} ${CFLAG} iterate_clz.c -o iterate_clz
-
-
+binary_search_clz: ${COMMON} binary_search_clz.c 
+	${CC} ${CFLAG} -Dbinary main.c $@.c -o $@
+recursive_clz: ${COMMON} recursive_clz.c
+	${CC} ${CFLAG} -Drecursive main.c $@.c -o $@
+iterate_clz: ${COMMON} iterate_clz.c
+	${CC} ${CFLAG} -Diterate main.c  $@.c -o $@
 
 clean:
-	-rm -f ${EXECUTABLES} gmon.out origin_data.txt output.txt plot.png
-bench: binary_search_clz recursive_clz iterate_clz
+	-rm -f ${EXECUTABLES} calculate gmon.out *.txt plot.png
+bench: ${EXECUTABLES}
 	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
 	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
 	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
@@ -30,6 +30,5 @@ output.txt: bench calculate.c
 	./calculate ${REPEAT}
 plot: output.txt
 	gnuplot plot.gp
-astyle: binary_search_clz.c recursive_clz.c iterate_clz.c calculate.c
-	astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none \
-		binary_search_clz.c recursive_clz.c iterate_clz.c calculate.c
+astyle: 
+	astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none *.c *.h

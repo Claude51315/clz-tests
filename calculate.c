@@ -1,33 +1,45 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+
+static int N;
+void calculate(char filename[]);
 int main(int argc, char* argv[])
 {
 
-    int N = atoi(argv[1]);
+    N = atoi(argv[1]);
+    printf("N = %d\n", N);
+    calculate("binary.txt");
+    calculate("recursive.txt");
+    calculate("iterate.txt");
+    return 0;
+}
+void calculate(char filename[])
+{
     FILE *data, *output;
-    char buffer[20];
-    double iterate = 0, binary =0, recursive=0;
+    char *pch;
+    double tmp_sum = 0;
     double tmp = 0;
-    data = fopen("origin_data.txt", "r");
+    data = fopen(filename, "r");
+    if(data == NULL) {
+        printf("%s\n", filename);
+    }
     while(!feof(data)) {
-        fscanf(data, "%s %lf", buffer, &tmp);
-        if(strcmp(buffer, "iterate") == 0) {
-            iterate += tmp;
-        } else if (strcmp(buffer, "recursive") ==0 ) {
-            recursive += tmp;
-        } else {
-            binary += tmp;
-        }
+        fscanf(data, "%lf", &tmp);
+        tmp_sum += tmp;
     }
     fclose(data);
-    iterate /= N;
-    recursive /= N;
-    binary /= N;
-    output = fopen("output.txt","w");
-    fprintf(output, "recursive %lf\n", recursive);
-    fprintf(output, "iterate %lf\n", iterate);
-    fprintf(output, "binary %lf\n", binary);
+    tmp_sum /= N;
+    /*
+    pch = strtok(filename, ".");
+    if(pch==NULL){
+        printf("QQQ\n");
+
+        return;
+
+    }
+    */
+    output = fopen("output.txt","a");
+    fprintf(output, "%s %lf\n", filename, tmp_sum);
     fclose(output);
-    return 0;
 }
