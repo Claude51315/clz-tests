@@ -37,7 +37,6 @@ void calculate(char filename[])
         printf("QQQ\n");
 
         return;
-
     }
     */
     output = fopen("output.txt","a");

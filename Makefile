@@ -3,7 +3,6 @@ CFLAG=-O0 -Wall -pg -g
 COMMON= main.c clz.h
 REPEAT=20
 
-
 EXECUTABLES=binary_search_clz \
 			recursive_clz \
 			iterate_clz \
@@ -24,10 +23,12 @@ byte_shift_clz: ${COMMON} byte_shift_clz.c
 clean:
 	-rm -f ${EXECUTABLES} calculate gmon.out *.txt plot.png
 bench: ${EXECUTABLES}
+#	echo 1 | sudo tee /proc/sys/vm/drop_caches	
 	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
 	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
 	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
 	perf stat --repeat ${REPEAT} -e cycles ./byte_shift
+#	perf stat --repeat ${REPEAT} -e cycles ./harley_clz
 output.txt: bench calculate.c
 	${CC} calculate.c -o calculate
 	./calculate ${REPEAT}
