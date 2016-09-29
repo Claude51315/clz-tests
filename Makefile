@@ -31,7 +31,7 @@ bench: ${EXECUTABLES}
 	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
 	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
 	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
-	perf stat --repeat ${REPEAT} -e cycles ./byte_shift
+	perf stat --repeat ${REPEAT} -e cycles ./byte_shift_clz
 	perf stat --repeat ${REPEAT} -e cycles ./harley_clz
 output.txt: bench calculate.c
 	${CC} calculate.c -o calculate
