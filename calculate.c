@@ -7,11 +7,14 @@ void calculate(char filename[]);
 int main(int argc, char* argv[])
 {
 
-    N = atoi(argv[1]);
+    //N = atoi(argv[1]);
+    N = 16384;
     printf("N = %d\n", N);
     calculate("binary.txt");
     calculate("recursive.txt");
     calculate("iterate.txt");
+    calculate("harley.txt");
+    calculate("byteshift.txt");
     return 0;
 }
 void calculate(char filename[])
