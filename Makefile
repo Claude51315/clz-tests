@@ -8,7 +8,7 @@ EXECUTABLES=binary_search_clz \
 			iterate_clz \
 			byte_shift_clz \
 			harley_clz
-all: astyle plot
+all: astyle exec
 exec: ${EXECUTABLES}
 
 .phony: clean bench astyle
@@ -26,14 +26,21 @@ harley_clz: ${COMMON} harley_clz.c
 
 clean:
 	-rm -f ${EXECUTABLES} calculate gmon.out *.txt plot.png
-bench: ${EXECUTABLES}
+run: ${EXECUTABLES}
 #	echo 1 | sudo tee /proc/sys/vm/drop_caches	
-	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
-	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
-	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
-	perf stat --repeat ${REPEAT} -e cycles ./byte_shift_clz
-	perf stat --repeat ${REPEAT} -e cycles ./harley_clz
-output.txt: bench calculate.c
+	-rm -f *.txt
+
+#	perf stat --repeat ${REPEAT} -e cycles ./binary_search_clz
+#	perf stat --repeat ${REPEAT} -e cycles ./recursive_clz
+#	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
+#	perf stat --repeat ${REPEAT} -e cycles ./byte_shift_clz
+#	perf stat --repeat ${REPEAT} -e cycles ./harley_clz
+	taskset -c 1 ./binary_search_clz
+	taskset -c 1 ./recursive_clz
+	taskset -c 1 ./iterate_clz
+	taskset -c 1 ./byte_shift_clz
+	taskset -c 1 ./harley_clz
+output.txt: calculate.c
 	${CC} calculate.c -o calculate
 	./calculate ${REPEAT}
 plot: output.txt
