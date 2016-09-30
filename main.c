@@ -76,9 +76,9 @@ int main ( int argc, char* argv[])
 #else
         p = fopen("recursive.txt", "a");
 #endif
-        fprintf(p,"%lu\n", timecall);
+        fprintf(p,"%u %lu\n", i , timecall);
         fclose(p);
-        printf("cycles: %lu\n", timecall);
+        //printf("cycles: %lu\n", timecall);
     }
     return 0;
 }

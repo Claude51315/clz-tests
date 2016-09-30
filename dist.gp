@@ -9,7 +9,7 @@ set xtic 2000
 set xtics rotate by 45 right
 set tmargin 2
 
-plot [:][:300] 'binary.txt' with points title 'binary', \
+plot [:][:300] 'binary.txt' using 1:2 with points title 'binary', \
 'iterate.txt' with points title 'iterate',\
 'recursive.txt' with points title 'recursive',\
 'harley.txt' with points title 'harley',\

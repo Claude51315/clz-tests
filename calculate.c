@@ -2,14 +2,16 @@
 #include<stdlib.h>
 #include<string.h>
 
-static int N;
+static unsigned int min;
+static unsigned int max;
+static unsigned int N;
 void calculate(char filename[]);
 int main(int argc, char* argv[])
 {
 
-    //N = atoi(argv[1]);
-    N = 16384;
-    printf("N = %d\n", N);
+    min = atoi(argv[1]);
+    max = atoi(argv[2]);
+    N = max - min + 1;
     calculate("binary.txt");
     calculate("recursive.txt");
     calculate("iterate.txt");
@@ -20,29 +22,23 @@ int main(int argc, char* argv[])
 void calculate(char filename[])
 {
     FILE *data, *output;
-    char *pch;
+    char buffer[20];
     double tmp_sum = 0;
     double tmp = 0;
+    unsigned int foo;
     data = fopen(filename, "r");
     if(data == NULL) {
         printf("%s open fail!\n", filename);
         return ;
     }
     while(!feof(data)) {
-        fscanf(data, "%lf", &tmp);
+        fscanf(data, "%u %lf", &foo, &tmp);
         tmp_sum += tmp;
     }
     fclose(data);
     tmp_sum /= N;
-    /*
-    pch = strtok(filename, ".");
-    if(pch==NULL){
-        printf("QQQ\n");
-
-        return;
-    }
-    */
+    strncpy(buffer, filename, strlen(filename) -4);
     output = fopen("output.txt","a");
-    fprintf(output, "%s %lf\n", filename, tmp_sum);
+    fprintf(output, "%s %lf\n", buffer, tmp_sum);
     fclose(output);
 }

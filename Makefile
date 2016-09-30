@@ -43,8 +43,9 @@ run: ${EXECUTABLES}
 	taskset -c 1 ./harley_clz ${min} ${max}
 output.txt: calculate.c
 	${CC} calculate.c -o calculate
-	./calculate ${REPEAT}
+	./calculate ${min} ${max}
 plot: output.txt
-	gnuplot plot.gp
+	gnuplot dist.gp
+	gnuplot average.gp
 astyle: 
 	astyle --style=kr --indent=spaces=4 --indent-switches --suffix=none *.c *.h
