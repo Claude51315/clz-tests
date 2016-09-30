@@ -2,7 +2,8 @@ CC=gcc
 CFLAG=-O0 -Wall -pg -g
 COMMON= main.c clz.h
 REPEAT=20
-
+min= 100000
+max= 165536
 EXECUTABLES=binary_search_clz \
 			recursive_clz \
 			iterate_clz \
@@ -35,11 +36,11 @@ run: ${EXECUTABLES}
 #	perf stat --repeat ${REPEAT} -e cycles ./iterate_clz
 #	perf stat --repeat ${REPEAT} -e cycles ./byte_shift_clz
 #	perf stat --repeat ${REPEAT} -e cycles ./harley_clz
-	taskset -c 1 ./binary_search_clz
-	taskset -c 1 ./recursive_clz
-	taskset -c 1 ./iterate_clz
-	taskset -c 1 ./byte_shift_clz
-	taskset -c 1 ./harley_clz
+	taskset -c 1 ./binary_search_clz ${min} ${max}
+	taskset -c 1 ./recursive_clz ${min} ${max}
+	taskset -c 1 ./iterate_clz ${min} ${max}
+	taskset -c 1 ./byte_shift_clz ${min} ${max}
+	taskset -c 1 ./harley_clz ${min} ${max}
 output.txt: calculate.c
 	${CC} calculate.c -o calculate
 	./calculate ${REPEAT}

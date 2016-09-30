@@ -43,15 +43,20 @@ static double diff_in_second(struct timespec start, struct timespec end);
 static double diff_in_nano_second(struct timespec start, struct timespec end);
 int main ( int argc, char* argv[])
 {
+    if(argc!=3) {
+        printf("usage: %s min max\n", argv[0]);
+        return 0;
+    }
     FILE *p;
     unsigned time_high1, time_high2, time_low1, time_low2;
+    unsigned int min, max;
+    min = atoi(argv[1]);
+    max = atoi(argv[2]);
     struct timespec start = {0,0};
     struct timespec end = {0,0};
     uint32_t upper_bound = UINT16_MAX;
     uint64_t timecall ;
-    //clock_gettime(CLOCK_ID, &start);
-    for(uint32_t i = 100000000; i < 100016384; i++) {
-        //clock_gettime(CLOCK_ID, &start);
+    for(uint32_t i = min; i < max; i++) {
         timecall = 0;
         for(int j = 0 ; j < 100 ; j ++) {
             get_cycles(&time_high1, &time_low1);
@@ -59,8 +64,7 @@ int main ( int argc, char* argv[])
             get_cycles_end(&time_high2, &time_low2);
             timecall += diff_in_cycles(time_high1,time_low1,time_high2,time_low2);
         }
-        timecall /= 100;
-        //clock_gettime(CLOCK_ID, &end);
+        timecall = timecall / 100;
 #ifdef binary
         p = fopen("binary.txt","a");
 #elif iterate
@@ -72,12 +76,10 @@ int main ( int argc, char* argv[])
 #else
         p = fopen("recursive.txt", "a");
 #endif
-        //fprintf(p,"%lf\n", diff_in_nano_second(start, end));
         fprintf(p,"%lu\n", timecall);
         fclose(p);
-
+        printf("cycles: %lu\n", timecall);
     }
-    //clock_gettime(CLOCK_ID, &end);
     return 0;
 }
 static double diff_in_second(struct timespec start, struct timespec end)
